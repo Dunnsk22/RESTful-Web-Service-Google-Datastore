@@ -38,6 +38,7 @@ import com.google.appengine.api.datastore.Query;
 				String phone_num = entity.getProperty("Phone_Number").toString();
 				addStaffData.put(id, new StaffInfo(id, forename, surname, address, email, phone_num));
 			}
+			
 			return addStaffData;
 		}
 
@@ -45,6 +46,10 @@ import com.google.appengine.api.datastore.Query;
 		//Returns the Staff Model
 		public static Map<String, StaffInfo> getStaffModel() {
 			addStaffData = queryGoogleDatastore( );
+			addStaffData.put("2", new StaffInfo("200", "Smith", "Rob", "12 Runville Close, Levenshulme", "naeem@hotmail.co.uk", "01782 667889"));
+			addStaffData.put("3", new StaffInfo("300", "Barlow", "Keith", "12 High Close, Levenshulme", "naeem@hotmail.co.uk", "01782 999888"));
+			addStaffData.put("4", new StaffInfo("400", "Johno", "Mamma", "12 Standard Close, Didsbury", "naeem@me.co.uk", "0161 667889"));
+
 			return addStaffData;
 		}
 

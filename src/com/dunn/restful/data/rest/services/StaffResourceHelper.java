@@ -38,11 +38,11 @@ public class StaffResourceHelper {
 
 	// Application integration
 	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
 	public StaffInfo getStaffInfo() {
 		StaffInfo StaffInfo = StaffDAO.getStaffModel().get(id);
 		if (StaffInfo == null)
-			throw new RuntimeException("Get: Todo with " + id + " not found");
+			throw new RuntimeException("Get: Staff with " + id + " not found");
 		return StaffInfo;
 	}
 
@@ -52,7 +52,7 @@ public class StaffResourceHelper {
 	public StaffInfo getStaffInfoHTML() {
 		StaffInfo StaffInfo = StaffDAO.getStaffModel().get(id);
 		if (StaffInfo == null)
-			throw new RuntimeException("Get: Todo with " + id + " not found");
+			throw new RuntimeException("Get: Staff with " + id + " not found");
 		return StaffInfo;
 	}
 
@@ -67,7 +67,7 @@ public class StaffResourceHelper {
 	public void deleteStaffInfo() {
 		StaffInfo StaffInfo = StaffDAO.getStaffModel().remove(id);
 		if (StaffInfo == null)
-			throw new RuntimeException("Delete: Todo with " + id + " not found");
+			throw new RuntimeException("Delete: Staff with " + id + " not found");
 	}
 
 	private Response putAndGetResponse(StaffInfo StaffInfo) {
