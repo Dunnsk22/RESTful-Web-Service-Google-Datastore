@@ -19,7 +19,7 @@ public class StaffUtils {
 		private static Map<String, StaffInfo> staffMapData;
 
 		public static Map<String, StaffInfo> getSampleStaff() {
-			staffMapData = StaffDAO.getStaffModel();
+			staffMapData = StaffDAO.instance.queryGoogleDatastore();
 			return (staffMapData);
 		}
 

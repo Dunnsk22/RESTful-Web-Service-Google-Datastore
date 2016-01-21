@@ -4,12 +4,14 @@
 package com.dunn.restful.data.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author joshuadunn
  *
  */
 @XmlRootElement
+@XmlType(propOrder = { "staffID", "surname", "forename", "location", "phone", "email" })
 public class StaffInfo {
 	String Surname, Forename, Address, Email, Phone;
 	String StaffID;

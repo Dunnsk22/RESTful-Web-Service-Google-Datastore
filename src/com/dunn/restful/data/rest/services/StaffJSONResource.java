@@ -24,7 +24,7 @@ public class StaffJSONResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<StaffInfo> getStaffInfoBrowserText() {
 		List<StaffInfo> staff = new ArrayList<StaffInfo>();
-		staff.addAll(StaffDAO.instance.getStaffModel().values());
+		staff.addAll(StaffDAO.instance.queryGoogleDatastore().values());
 		return staff;
 	}
 }

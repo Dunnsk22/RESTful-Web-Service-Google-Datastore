@@ -27,7 +27,7 @@ import com.dunn.restful.data.model.StaffInfo;
 		@Produces(MediaType.TEXT_XML)
 		public List<StaffInfo> getStaffInfoBrowser() {
 			List<StaffInfo> staff = new ArrayList<StaffInfo>();
-			staff.addAll(StaffDAO.getStaffModel().values());
+			staff.addAll(StaffDAO.instance.queryGoogleDatastore().values());
 			return staff;
 		}
 
@@ -36,7 +36,7 @@ import com.dunn.restful.data.model.StaffInfo;
 		@Path("numOfStaff")
 		@Produces(MediaType.TEXT_PLAIN)
 		public String getCount() {
-			int count = StaffDAO.getStaffModel().size();
+			int count = StaffDAO.instance.queryGoogleDatastore().size();
 			return String.valueOf(count);
 		}
 

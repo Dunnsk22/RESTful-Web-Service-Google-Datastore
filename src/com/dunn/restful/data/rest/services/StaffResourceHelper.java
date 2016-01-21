@@ -40,7 +40,7 @@ public class StaffResourceHelper {
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
 	public StaffInfo getStaffInfo() {
-		StaffInfo StaffInfo = StaffDAO.getStaffModel().get(id);
+		StaffInfo StaffInfo = StaffDAO.instance.queryGoogleDatastore().get(id);
 		if (StaffInfo == null)
 			throw new RuntimeException("Get: Staff with " + id + " not found");
 		return StaffInfo;
@@ -50,7 +50,7 @@ public class StaffResourceHelper {
 	@GET
 	@Produces(MediaType.TEXT_XML)
 	public StaffInfo getStaffInfoHTML() {
-		StaffInfo StaffInfo = StaffDAO.getStaffModel().get(id);
+		StaffInfo StaffInfo = StaffDAO.instance.queryGoogleDatastore().get(id);
 		if (StaffInfo == null)
 			throw new RuntimeException("Get: Staff with " + id + " not found");
 		return StaffInfo;
@@ -65,20 +65,20 @@ public class StaffResourceHelper {
 
 	@DELETE
 	public void deleteStaffInfo() {
-		StaffInfo StaffInfo = StaffDAO.getStaffModel().remove(id);
+		StaffInfo StaffInfo = StaffDAO.instance.queryGoogleDatastore().remove(id);
 		if (StaffInfo == null)
 			throw new RuntimeException("Delete: Staff with " + id + " not found");
 	}
 
 	private Response putAndGetResponse(StaffInfo StaffInfo) {
 		Response res;
-		if (StaffDAO.getStaffModel().containsKey(
+		if (StaffDAO.instance.queryGoogleDatastore().containsKey(
 				StaffInfo.getStaffID())) {
 			res = Response.noContent().build();
 		} else {
 			res = Response.created(uriInfo.getAbsolutePath()).build();
 		}
-		StaffDAO.getStaffModel()
+		StaffDAO.instance.queryGoogleDatastore()
 				.put(StaffInfo.getStaffID(), StaffInfo);
 		return res;
 	}

@@ -10,6 +10,7 @@ import com.dunn.restful.data.model.StaffInfo;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 
@@ -21,21 +22,32 @@ import com.google.appengine.api.datastore.Query;
 		instance;
 
 		private static Map<String, StaffInfo> addStaffData;
+		static DatastoreService dataStoreService = DatastoreServiceFactory.getDatastoreService();
 
-		//Queries the Datastore for Records
-		public static Map<String, StaffInfo> queryGoogleDatastore(){
-			DatastoreService dataStoreService = DatastoreServiceFactory.getDatastoreService();
+
+		/** 
+		 * 
+		 * @return addStaffData - Returns a map of data from the GAE Datastore
+		 *
+		 */		public Map<String, StaffInfo> queryGoogleDatastore(){
 			addStaffData = new LinkedHashMap<String, StaffInfo>();
-			Query query = new Query("Staff").addSort("Forename", Query.SortDirection.ASCENDING);
-			PreparedQuery prep = dataStoreService.prepare(query);
-			for (Entity entity : prep.asIterable()) {
+			Query query = new Query("StaffDetails");
+			PreparedQuery googleQuery = dataStoreService.prepare(query);
+			
+			if (googleQuery.countEntities(FetchOptions.Builder.withDefaults()) < 1) {
+				
+				addNewDatastoreEntry();
+			}
+			
+			for (Entity entity : googleQuery.asIterable()) {
+				
 				String idKey = entity.getKey().toString();
 				String id = idKey.substring(idKey.indexOf("(") + 1,idKey.indexOf(")"));
 				String forename = entity.getProperty("Forename").toString();
 				String surname = entity.getProperty("Surname").toString();
 				String email = entity.getProperty("Email").toString();
 				String address = entity.getProperty("Address").toString();
-				String phone_num = entity.getProperty("Phone_Number").toString();
+				String phone_num = entity.getProperty("Phone_Num").toString();
 				addStaffData.put(id, new StaffInfo(id, forename, surname, address, email, phone_num));
 			}
 			
@@ -43,14 +55,31 @@ import com.google.appengine.api.datastore.Query;
 		}
 
 
-		//Returns the Staff Model
-		public static Map<String, StaffInfo> getStaffModel() {
-			addStaffData = queryGoogleDatastore( );
-			addStaffData.put("2", new StaffInfo("200", "Smith", "Rob", "12 Runville Close, Levenshulme", "naeem@hotmail.co.uk", "01782 667889"));
-			addStaffData.put("3", new StaffInfo("300", "Barlow", "Keith", "12 High Close, Levenshulme", "naeem@hotmail.co.uk", "01782 999888"));
-			addStaffData.put("4", new StaffInfo("400", "Johno", "Mamma", "12 Standard Close, Didsbury", "naeem@me.co.uk", "0161 667889"));
+		/** 
+		 * 
+		 * Adds Two New Entities to the GAE Datastore for testing locally
+		 *
+		 */
+		public static void addNewDatastoreEntry() {
+			
+			System.out.println("IN the datastoreEntry Method");
+			Entity staffMember = new Entity("StaffDetails");
+			staffMember.setProperty("Forename", "Johnathon");
+			staffMember.setProperty("Surname", "Robson");
+			staffMember.setProperty("Email", "robby_john@me.com");
+			staffMember.setProperty("Phone_Num", "01887 223112");
+			staffMember.setProperty("Address", "22 Hataway Close, Biddulph, Stoke on Trent");
 
-			return addStaffData;
+			Entity staffMemberTwo = new Entity("StaffDetails");
+			staffMemberTwo.setProperty("Forename", "Kai");
+			staffMemberTwo.setProperty("Surname", "Salt");
+			staffMemberTwo.setProperty("Email", "salty_pig@me.com");
+			staffMemberTwo.setProperty("Phone_Num", "01877 223112");
+			staffMemberTwo.setProperty("Address", "2211 Runaway Drive, Congleton, Stoke on Trent");
+
+			// Add the data to the GAE Datastore
+			dataStoreService.put(staffMember);
+			dataStoreService.put(staffMemberTwo);
+			
 		}
-
 	}

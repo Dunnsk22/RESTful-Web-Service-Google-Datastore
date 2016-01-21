@@ -26,7 +26,7 @@ import com.dunn.restful.data.model.StaffInfo;
 		@Produces(MediaType.TEXT_PLAIN)
 		public String getStaffInfoBrowserText() {
 			List<StaffInfo> staff = new ArrayList<StaffInfo>();
-			staff.addAll(StaffDAO.instance.getStaffModel().values());
+			staff.addAll(StaffDAO.instance.queryGoogleDatastore().values());
 			return staff.toString();
 		}
 
